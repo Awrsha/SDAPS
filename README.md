@@ -1,1 +1,0 @@
-# Intelligent-Skin-Disease-Prediction-System
