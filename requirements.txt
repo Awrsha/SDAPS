@@ -1,0 +1,6 @@
+flask
+werkzeug
+pillow
+numpy
+tensorflow
+waitress
