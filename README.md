@@ -5,7 +5,7 @@ The Intelligent Skin Disease Prediction System WebApp is designed to assist user
 
 ## Features
 - **Image Upload**: Users can upload images of their skin conditions for analysis.
-- **AI Diagnosis**: The application utilizes a trained machine learning model to predict potential skin conditions and their likelihood.
+- **AI Diagnosis**: The application utilizes a trained deep learning model to predict potential skin conditions and their likelihood.
 - **Detailed Results**: Displays the diagnosis, probability of malignancy, and provides both general and personalized advice based on the analysis.
 - **Interactive UI**: Engaging user interface with animations, progress bars, and interactive elements.
 - **Countdown Timer**: A countdown feature to encourage timely medical consultation.
