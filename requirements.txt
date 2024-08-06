@@ -2,5 +2,6 @@ flask
 werkzeug
 pillow
 numpy
-tensorflow
+tensorflow==2.15
 waitress
+requests
