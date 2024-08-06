@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, render_template, request, redirect, url_for
+""" from flask import Flask, jsonify, render_template, request, redirect, url_for
 from werkzeug.utils import secure_filename
 import os
 import glob
@@ -13,7 +13,36 @@ os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
 
 # Load your pre-trained model
-model = tf.keras.models.load_model("static/models/model_version_1.keras")
+model = tf.keras.models.load_model("static/models/model_version_1.keras") """
+
+
+import os
+import requests
+import tempfile
+from flask import Flask, jsonify, render_template, request
+from werkzeug.utils import secure_filename
+import glob
+import numpy as np
+from PIL import Image
+import tensorflow as tf
+
+app = Flask(__name__)
+app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
+app.config['UPLOAD_FOLDER'] = os.path.join(os.path.dirname(os.path.abspath(__file__)), "static", "uploads")
+os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
+app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
+
+# Function to download and load the model
+def load_model():
+    model_url = "https://github.com/Awrsha/Intelligent-Skin-Disease-Prediction-System/blob/master/static/models/model_version_1.keras"
+    with tempfile.NamedTemporaryFile(delete=False) as temp_file:
+        response = requests.get(model_url)
+        temp_file.write(response.content)
+        temp_file_path = temp_file.name
+    
+    model = tf.keras.models.load_model(temp_file_path)
+    os.unlink(temp_file_path)
+    return model
 
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in {'png', 'jpg', 'jpeg', 'gif'}
