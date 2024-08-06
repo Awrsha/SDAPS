@@ -13,7 +13,7 @@ os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
 
 # Load your pre-trained model
-model = tf.keras.models.load_model("static/models/model.keras")
+model = tf.keras.models.load_model("static/models/model_version_1.keras")
 
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in {'png', 'jpg', 'jpeg', 'gif'}
@@ -25,20 +25,13 @@ def clear_upload_folder():
 
 def predict_image(image_path):
     try:
-        # Open an image file
         with Image.open(image_path) as img:
-            # Resize image to 224x224
             img = img.resize((224, 224))
-            # Convert image to numpy array
             img_array = np.array(img)
-            # Expand dimensions to match the model input
             img_array = np.expand_dims(img_array, axis=0)
-            # Normalize image
             img_array = img_array / 255.0
             
-            # Make prediction
             prediction = model.predict(img_array)
-            # Assuming model prediction is a single value
             return prediction[0][0]
     except Exception as e:
         app.logger.error(f"Error processing image: {e}")
@@ -111,7 +104,6 @@ def diagnose():
         if prediction is None:
             return jsonify({'error': 'پردازش تصویر با مشکل مواجه شد.'})
 
-        # Format the prediction as a percentage
         formatted_prediction = f"{prediction * 100:.0f}%"
 
         condition, general_advice, personal_advice = get_recommendation(prediction, user_data)
