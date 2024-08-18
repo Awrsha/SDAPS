@@ -56,7 +56,7 @@ The Intelligent Skin Disease Prediction System WebApp is designed to assist user
 ### Docker Setup (Optional)
 1. **Build the Docker image**
    ```bash
-   docker build -t skin-disease-prediction:latest .
+   docker build -t Intelligent-Skin-Disease-Prediction-System:latest .
    ```
 
 2. **Run the Docker container**
