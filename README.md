@@ -39,8 +39,8 @@ The Intelligent Skin Disease Prediction System WebApp is designed to assist user
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/awrsha/skin-disease-prediction.git
-   cd skin-disease-prediction
+   git clone https://github.com/Awrsha/Intelligent-Skin-Disease-Prediction-System.git
+   cd Intelligent-Skin-Disease-Prediction-System
    ```
 
 2. **Install dependencies**
