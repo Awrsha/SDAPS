@@ -146,8 +146,3 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - Medical professionals who provided expert guidance
 - Open-source community for various tools and libraries
 - Research papers and datasets that made this possible
-
-<div align="center">
-  <h2>✨ Star History</h2>
-  <img src="https://via.placeholder.com/500x200" alt="Star History Chart"/>
-</div>
