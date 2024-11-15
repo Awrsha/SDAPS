@@ -105,7 +105,7 @@ docker-compose logs -f
 <div align="center">
   <table>
     <tr>
-      <td align="center"><img src="https://via.placeholder.com/150" alt="Step 1"/><br>1. Upload Image</td>
+      <td align="center"><img src="https://github.com/user-attachments/assets/b2b7541d-29a7-4244-93d8-cdb41bc4f9e1" height='100' width='100'/><br>1. Upload Image</td>
       <td align="center"><img src="https://via.placeholder.com/150" alt="Step 2"/><br>2. Analysis</td>
       <td align="center"><img src="https://via.placeholder.com/150" alt="Step 3"/><br>3. Results</td>
     </tr>
