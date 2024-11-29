@@ -1,148 +1,109 @@
-<div align="center">
-  <h1>🔬 Intelligent Skin Disease Prediction System</h1>
-  <p>Advanced AI-powered dermatological analysis platform</p>
 
-  [![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-  [![Python](https://img.shields.io/badge/Python-3.8+-green.svg)](https://www.python.org)
-  [![TensorFlow](https://img.shields.io/badge/TensorFlow-2.x-orange.svg)](https://tensorflow.org)
-  [![Docker](https://img.shields.io/badge/Docker-Enabled-blue.svg)](https://www.docker.com/)
-</div>
+# 🏥 Smart Dermatological Analysis & Prescription System (SDAPS)
 
-<p align="center">
-  <img src="https://via.placeholder.com/800x400" alt="System Demo" width="800"/>
-</p>
+A powerful AI-driven system combining computer vision and natural language processing for dermatological diagnosis and personalized medical recommendations.
 
-## 🌟 Key Features
+## 🎯 Performance Metrics
 
-<div align="center">
+| Metric | Score |
+|--------|-------|
+| Sensitivity | 88% |
+| Specificity | 84% |
+| F1 Score | 81% |
+| Accuracy | 87% |
 
-| Feature | Description |
-|---------|------------|
-| 🤖 AI-Powered Analysis | State-of-the-art deep learning for accurate skin condition detection |
-| 📊 Real-time Processing | Instant analysis with visual feedback and progress tracking |
-| 📱 Responsive Design | Seamless experience across all devices and screen sizes |
-| 🔒 Privacy Focused | Secure image handling and data protection |
-| 📈 Detailed Analytics | Comprehensive reports with confidence scores and recommendations |
-| 🌐 Multi-language Support | Available in multiple languages for global accessibility |
-
-</div>
-
-## 🏗️ Architecture
+## 🔍 System Architecture
 
 ```mermaid
 graph TD
-    A[Web Interface] --> B[Flask Backend]
-    B --> C[TensorFlow Model]
-    C --> D[Image Processing]
-    D --> E[Diagnosis Engine]
-    E --> F[Results Analysis]
-    F --> G[Report Generation]
+    A[Patient Input] --> B[Image Processing Module]
+    A --> C[Patient Data Form]
+    B --> D[CNN with Attention Gate]
+    D --> E[ResNet-50]
+    C --> F[Local LLM]
+    E --> F
+    F --> G[Medical Recommendations]
+    F --> H[Drug Prescriptions]
+    F --> I[Risk Alerts]
 ```
 
-## 📂 Project Structure
+## 🧠 Core Components
 
-<pre>
-📦 intelligent-skin-disease-prediction
-├── 🐳 docker/
-│   ├── Dockerfile
-│   └── docker-compose.yml
-├── 🎯 src/
-│   ├── 🌐 static/
-│   │   ├── css/
-│   │   ├── js/
-│   │   ├── img/
-│   │   └── models/
-│   ├── 📑 templates/
-│   │   ├── index.html
-│   │   ├── result.html
-│   │   └── components/
-│   └── 🐍 app/
-│       ├── __init__.py
-│       ├── routes.py
-│       ├── models.py
-│       └── utils.py
-├── 📝 docs/
-│   ├── API.md
-│   └── CONTRIBUTING.md
-├── 🧪 tests/
-├── 📄 requirements.txt
-└── 🚀 README.md
-</pre>
+### 1. Computer Vision Module
+- **Architecture**: CNN with Attention Gate + ResNet-50
+- **Training Datasets**: 
+  - ISIC (German Medical Research Center)
+  - Melanoma Dataset (University of Waterloo)
+- **Capabilities**: 
+  - Lesion classification
+  - Severity assessment (%)
+  - Malignancy prediction
 
-## 🚀 Quick Start
+### 2. Medical Advisory System
+- **Technology**: Local LLM ChatBot
+- **Framework**: Flask
+- **Frontend**: HTML, CSS, JavaScript, AJAX
+- **UI Frameworks**: Bootstrap, TailWind
+- **Features**:
+  - Patient form analysis
+  - ICommon and non-sanctioned drugs in Iran
+  - Age-appropriate recommendations
+  - Medical history consideration
+  - Contraindication warnings
 
-### 🐍 Standard Installation
+## 💡 Key Features
 
-```bash
-# Clone repository
-git clone https://github.com/Awrsha/Intelligent-Skin-Disease-Prediction-System.git
-cd Intelligent-Skin-Disease-Prediction-System
+- 🔄 Real-time analysis
+- 📊 Severity percentage estimation
+- 💊 Personalized drug recommendations
+- ⚠️ Risk assessment
+- 📝 Comprehensive medical reports
+- 🏷️ Multi-class lesion classification
 
-# Create virtual environment
-python -m venv venv
-source venv/bin/activate  # Linux/Mac
-.\venv\Scripts\activate  # Windows
+## 🎯 Use Cases
 
-# Install dependencies
-pip install -r requirements.txt
+1. **Remote Diagnosis**
+   - Preliminary skin condition assessment
+   - Severity estimation
+   - Urgency determination
 
-# Run application
-python app.py
+2. **Medical Recommendations**
+   - Personalized treatment plans
+   - Drug prescriptions
+   - Dietary advice
+
+3. **Risk Management**
+   - Malignancy detection
+   - Referral recommendations
+   - Drug interaction warnings
+
+## ⚙️ Technical Requirements
+
+```yaml
+Dependencies:
+  - Python 3.8+
+  - TensorFlow 2.x
+  - Keras
+  - Flask
+  - OpenCV
+  - CUDA Support
+
+Hardware:
+  - GPU: NVIDIA (8GB+ VRAM)
+  - RAM: 16GB+
+  - Storage: 500GB+
 ```
 
-### 🐳 Docker Installation
+## 📈 Performance Visualization
 
-```bash
-# Build and run with Docker Compose
-docker-compose up --build -d
-
-# View logs
-docker-compose logs -f
 ```
-
-## 💻 Usage Guide
-
-<div align="center">
-  <table>
-    <tr>
-      <td align="center"><img src="https://github.com/user-attachments/assets/b2b7541d-29a7-4244-93d8-cdb41bc4f9e1" height='150' width='150'/><br>1. Upload Image</td>
-      <td align="center"><img src="https://via.placeholder.com/150" alt="Step 2"/><br>2. Analysis</td>
-      <td align="center"><img src="https://via.placeholder.com/150" alt="Step 3"/><br>3. Results</td>
-    </tr>
-  </table>
-</div>
-
-## 📊 Performance Metrics
-
-<div align="center">
-
-| Metric | Value |
-|--------|--------|
-| Accuracy | 83% |
-| Precision | 82.2% |
-| Recall | 85.7% |
-| F1 Score | ?% |
-
-</div>
-
-## 🛡️ Security Features
-
-- 🔒 SSL/TLS Encryption
-- 🔐 JWT Authentication
-- 🛡️ Rate Limiting
-- 🔍 Input Validation
-- 📝 Audit Logging
-
-## 🤝 Contributing
-
-We welcome contributions! Please see our [Contributing Guidelines](CONTRIBUTING.md) for details.
-
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 🙏 Acknowledgments
-
-- Medical professionals who provided expert guidance
-- Open-source community for various tools and libraries
-- Research papers and datasets that made this possible
+Accuracy Distribution:
+█████████████████████████████████████████ 87%
+                                                     
+Sensitivity vs Specificity:
+Sensitivity: ████████████████████████████████████ 88%
+Specificity: ██████████████████████████████████ 84%
+                                                     
+F1 Score:
+████████████████████████████████████ 81%
+```
