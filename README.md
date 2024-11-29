@@ -1,4 +1,3 @@
-
 # 🏥 Smart Dermatological Analysis & Prescription System (SDAPS)
 
 A powerful AI-driven system combining computer vision and natural language processing for dermatological diagnosis and personalized medical recommendations.
@@ -30,10 +29,11 @@ graph TD
 ## 🧠 Core Components
 
 ### 1. Computer Vision Module
-- **Architecture**: CNN with Attention Gate + ResNet-50
-- **Training Datasets**: 
-  - ISIC (German Medical Research Center)
-  - Melanoma Dataset (University of Waterloo)
+- **Architecture**: Convolutional neural network with Attention Gate and  ResNet-50
+- **Training Dataset**: 
+  - International Skin Imaging Collaboration [(ISIC Dataset)](https://challenge.isic-archive.com/data/)
+- **Testing Dataset**: 
+  - [Vision and Image Processing Lab](https://paperswithcode.com/dataset/university-of-waterloo-skin-cancer-database#:~:text=dermatological%20macro%2Dimages-,The%20dataset%20is%20maintained%20by%20VISION%20AND%20IMAGE%20PROCESSING%20LAB,manual%20segmentations%20of%20the%20lesions.), University of Waterloo
 - **Capabilities**: 
   - Lesion classification
   - Severity assessment (%)
@@ -98,12 +98,15 @@ Hardware:
 
 ```
 Accuracy Distribution:
+
 █████████████████████████████████████████ 87%
                                                      
 Sensitivity vs Specificity:
+
 Sensitivity: ████████████████████████████████████ 88%
 Specificity: ██████████████████████████████████ 84%
                                                      
 F1 Score:
+
 ████████████████████████████████████ 81%
 ```
