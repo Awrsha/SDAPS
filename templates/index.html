@@ -1,589 +1,1507 @@
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>سیستم هوشمند تشخیص بیماری های پوستی</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
     <style>
-        body {
-            background-color: #f8f9fa;
+      @font-face {
+        font-family: "Vazir";
+        src: url("https://cdn.jsdelivr.net/gh/rastikerdar/vazir-font@v30.1.0/dist/Vazir-Regular.woff2")
+          format("woff2");
+        font-weight: normal;
+        font-style: normal;
+      }
+
+      body {
+        font-family: "Vazir", sans-serif;
+        background-color: #f8f9fa;
+      }
+
+      .dark {
+        color-scheme: dark;
+        background-color: #0f172a;
+        color: #1e293b;
+      }
+
+      .container-main {
+        max-width: 1280px;
+        margin-left: auto;
+        margin-right: auto;
+        padding: 2rem;
+      }
+
+      .card {
+        background-color: #ffffff;
+        border-radius: 1rem;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+          0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        transition: all 0.3s;
+      }
+
+      .dark .card {
+        background-color: #ffffff;
+      }
+
+      .upload-container {
+        border: 2px dashed #5d5cde;
+        border-radius: 1rem;
+        padding: 2rem;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.3s;
+      }
+
+      .upload-container:hover {
+        background-color: rgba(93, 92, 222, 0.05);
+      }
+
+      .dark .upload-container {
+        border-color: #818cf8;
+      }
+
+      .dark .upload-container:hover {
+        background-color: rgba(129, 140, 248, 0.1);
+      }
+
+      .btn-primary {
+        background-color: #5d5cde;
+        color: white;
+        transition: all 0.3s;
+      }
+
+      .btn-primary:hover {
+        background-color: #4f46e5;
+      }
+
+      .dark .btn-primary {
+        background-color: #6366f1;
+      }
+
+      .dark .btn-primary:hover {
+        background-color: #4f46e5;
+      }
+
+      .btn-secondary {
+        background-color: #1e293b;
+        color: #fff;
+        transition: all 0.3s;
+      }
+
+      .btn-secondary:hover {
+        background-color: #cbd5e1;
+      }
+
+      .dark .btn-secondary {
+        background-color: #fff
+        color: #1e293b;
+      }
+
+      .dark .btn-secondary:hover {
+        background-color: #475569;
+      }
+
+      .symptom-tag {
+        background-color: #475569;
+        color: #1e293b;
+        border-radius: 9999px;
+        padding: 0.5rem 1rem;
+        cursor: pointer;
+        transition: all 0.2s;
+        user-select: none;
+      }
+
+      .dark .symptom-tag {
+        background-color: #6B7280;
+        color: #f1f5f9;
+      }
+
+      .symptom-tag:hover {
+        background-color: #1e293b;
+        transform: translateY(-1px);
+      }
+
+      .dark .symptom-tag:hover {
+        background-color: #475569;
+      }
+
+      .symptom-tag.active {
+        background-color: #5d5cde;
+        color: white;
+      }
+
+      .dark .symptom-tag.active {
+        background-color: #6366f1;
+      }
+
+      .input-field {
+        width: 100%;
+        border-radius: 0.5rem;
+        border: 1px solid #1e293b;
+        padding: 0.75rem 1rem;
+        font-size: 1rem;
+        transition: border-color 0.3s, box-shadow 0.3s;
+        background-color: #f8fafc;
+      }
+
+      .dark .input-field {
+        border-color: #334155;
+        background-color: #ffffff;
+        color: #6B7280;
+      }
+
+      .input-field:focus {
+        border-color: #5d5cde;
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(93, 92, 222, 0.2);
+      }
+
+      .dark .input-field:focus {
+        border-color: #6366f1;
+        box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+      }
+
+      select.input-field {
+        -webkit-appearance: none;
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+        background-position: right 0.75rem center;
+        background-repeat: no-repeat;
+        background-size: 1.25rem;
+        padding-right: 2.5rem;
+      }
+
+      .dark select.input-field {
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%23cbd5e1' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+      }
+
+      .form-label {
+        display: block;
+        font-weight: 500;
+        margin-bottom: 0.5rem;
+        color: #4b5563;
+      }
+
+      .dark .form-label {
+        color: #1e293b;
+      }
+
+      .error-message {
+        color: #ef4444;
+        font-size: 0.875rem;
+        margin-top: 0.25rem;
+        display: none;
+      }
+
+      .dark .error-message {
+        color: #f87171;
+      }
+
+      .tab-btn {
+        padding: 0.75rem 1.5rem;
+        font-weight: 500;
+        border-bottom: 2px solid transparent;
+        transition: all 0.3s;
+      }
+
+      .tab-btn.active {
+        border-bottom-color: #5d5cde;
+        color: #5d5cde;
+      }
+
+      .dark .tab-btn.active {
+        border-bottom-color: #6366f1;
+        color: #6366f1;
+      }
+
+      .tab-content {
+        display: none;
+      }
+
+      .tab-content.active {
+        display: block;
+        animation: fadeIn 0.5s ease forwards;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
         }
-        .main-container {
-            background-color: white;
-            border-radius: 15px;
-            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        to {
+          opacity: 1;
+          transform: translateY(0);
         }
-        .upload-container {
-            border: 2px dashed #007bff;
-            border-radius: 10px;
-            padding: 20px;
-            text-align: center;
-            cursor: pointer;
-        }
-        .upload-container:hover {
-            background-color: #f8f9fa;
-        }
-        .symptom-tag {
-            display: inline-block;
-            background-color: #e9ecef;
-            padding: 5px 10px;
-            margin: 5px;
-            border-radius: 15px;
-            cursor: pointer;
-        }
-        .symptom-tag.active {
-            background-color: #007bff;
-            color: white;
-        }
-        #body-map-container {
-            max-width: 300px;
-            margin: 0 auto;
-        }
-        #body-map .body-part {
-            fill: #e9ecef;
-            stroke: #6c757d;
-            stroke-width: 2;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        #body-map .body-part:hover, #body-map .body-part.active {
-            fill: #007bff;
-        }
-        .progress {
-            height: 10px;
-        }
-        .form-check {
-            padding-right: 1.75rem;
-        }
-        .error {
-            color: red;
-            display: none;
-        }
+      }
+
+      #body-map .body-part {
+        fill: #1e293b;
+        stroke: #94a3b8;
+        stroke-width: 1.5;
+        cursor: pointer;
+        transition: all 0.3s;
+      }
+
+      .dark #body-map .body-part {
+        fill: #E5E7EB;
+        stroke: #64748b;
+      }
+
+      #body-map .body-part:hover {
+        fill: #cbd5e1;
+      }
+
+      .dark #body-map .body-part:hover {
+        fill: #475569;
+      }
+
+      #body-map .body-part.active {
+        fill: #5d5cde;
+        stroke: #4338ca;
+        stroke-width: 2;
+      }
+
+      .dark #body-map .body-part.active {
+        fill: #6366f1;
+        stroke: #4f46e5;
+      }
+
+      /* Scrollbar style */
+      ::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+      }
+
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+
+      ::-webkit-scrollbar-thumb {
+        background: #cbd5e1;
+        border-radius: 9999px;
+      }
+
+      .dark ::-webkit-scrollbar-thumb {
+        background: #475569;
+      }
+
+      /* Progress bar */
+      .progress {
+        height: 0.5rem;
+        border-radius: 9999px;
+        overflow: hidden;
+        background-color: #1e293b;
+      }
+
+      .dark .progress {
+        background-color: #334155;
+      }
+
+      .progress-bar {
+        height: 100%;
+        background-color: #5d5cde;
+        transition: width 0.3s ease;
+      }
+
+      .dark .progress-bar {
+        background-color: #6366f1;
+      }
+
+      /* Utilities */
+      .shadow-md {
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+          0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      }
+
+      .dark .shadow-md {
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2),
+          0 2px 4px -1px rgba(0, 0, 0, 0.12);
+      }
+
+      .rounded-lg {
+        border-radius: 0.5rem;
+      }
+
+      .rounded-xl {
+        border-radius: 1rem;
+      }
+
+      .transition-all {
+        transition-property: all;
+        transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        transition-duration: 0.3s;
+      }
+
+      .backdrop {
+        position: fixed;
+        inset: 0;
+        background-color: rgba(0, 0, 0, 0.7);
+        backdrop-filter: blur(4px);
+        z-index: 50;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.3s ease;
+      }
+
+      .backdrop.active {
+        opacity: 1;
+        pointer-events: auto;
+      }
+
+      .modal {
+        max-width: 28rem;
+        width: 100%;
+        background-color: white;
+        border-radius: 1rem;
+        padding: 1.5rem;
+        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
+          0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        transform: scale(0.95);
+        transition: transform 0.3s ease;
+      }
+
+      .dark .modal {
+        background-color: #ffffff;
+      }
+
+      .backdrop.active .modal {
+        transform: scale(1);
+      }
     </style>
-</head>
-<body>
-    <div id="particles-js" class="position-fixed top-0 start-0 w-100 h-100"></div>
-
-    <div class="container py-5">
-        <div class="row justify-content-center">
-            <div class="col-lg-10">
-                <div class="main-container p-5" data-aos="fade-up" data-aos-duration="1000">
-                    <h2 class="text-center mb-5 animate__animated animate__fadeInDown">
-                        <span id="main-title"></span>
-                    </h2>
-
-                    <div class="upload-container animate__animated animate__fadeInUp" onclick="document.getElementById('file-input').click();">
-                        <div class="upload-content">
-                            تصویر خود را اینجا رها کنید یا کلیک کنید تا انتخاب کنید
-                        </div>
-                        <input type="file" id="file-input" name="file" style="display: none;" accept="image/*">
-                        <div class="file-details mt-3"></div>
-                    </div>
-
-                    <div id="image-preview" class="image-preview mt-4 text-center"></div>
-
-                    <div class="progress mt-3" style="display: none;">
-                        <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
-                    </div>
-
-                    <div id="upload-status" class="mt-2 text-center"></div>
-
-                    <form id="diagnosis-form" enctype="multipart/form-data">
-                        <div class="row mb-4 animate__animated animate__fadeInUp animate__delay-1s">
-                            <div class="col-md-3 mb-3">
-                                <label for="skin-type" class="form-label">نوع پوست:</label>
-                                <select class="form-select" id="skin-type" name="skin_type" required>
-                                    <option value="">انتخاب کنید</option>
-                                    <option value="معمولی">معمولی</option>
-                                    <option value="خشک">خشک</option>
-                                    <option value="چرب">چرب</option>
-                                    <option value="مختلط">مختلط</option>
-                                    <option value="حساس">حساس</option>
-                                </select>
-                                <span id="skin-type-error" class="error">لطفاً نوع پوست خود را انتخاب کنید.</span>
-                            </div>
-                            <div class="col-md-3 mb-3">
-                                <label for="age" class="form-label">سن:</label>
-                                <input type="number" class="form-control" id="age" name="age" required min="0" max="120">
-                                <span id="age-error" class="error">سن نمی‌تواند بیشتر از 120 باشد.</span>
-                            </div>
-                            <div class="col-md-3 mb-3">
-                                <label for="gender" class="form-label">جنسیت:</label>
-                                <select class="form-select" id="gender" name="gender" required>
-                                    <option value="">انتخاب کنید</option>
-                                    <option value="مرد">مرد</option>
-                                    <option value="زن">زن</option>
-                                </select>
-                                <span id="gender-error" class="error">لطفاً جنسیت خود را انتخاب کنید.</span>
-                            </div>
-                            <div class="col-md-3 mb-3">
-                                <label for="ethnicity" class="form-label">قومیت:</label>
-                                <select class="form-select" id="ethnicity" name="ethnicity" required>
-                                    <option value="">انتخاب کنید</option>
-                                    <option value="آسیایی">آسیایی</option>
-                                    <option value="اروپایی">اروپایی</option>
-                                    <option value="آفریقایی">آفریقایی</option>
-                                    <option value="آمریکایی">آمریکایی</option>
-                                    <option value="خاورمیانه">خاورمیانه</option>
-                                    <option value="سایر">سایر</option>
-                                </select>
-                                <span id="ethnicity-error" class="error">لطفاً قومیت خود را انتخاب کنید.</span>
-                            </div>
-
-                        <div class="mb-4 animate__animated animate__fadeInUp animate__delay-2s">
-                            <label class="form-label">علائم:</label>
-                            <div id="symptom-tags">
-                                <span class="symptom-tag" data-symptom="itching">خارش</span>
-                                <span class="symptom-tag" data-symptom="redness">قرمزی</span>
-                                <span class="symptom-tag" data-symptom="swelling">تورم</span>
-                                <span class="symptom-tag" data-symptom="pain">درد</span>
-                                <span class="symptom-tag" data-symptom="dryness">خشکی</span>
-                                <span class="symptom-tag" data-symptom="scaling">پوسته‌ریزی</span>
-                                <span class="symptom-tag" data-symptom="blistering">تاول</span>
-                                <span class="symptom-tag" data-symptom="burning">سوزش</span>
-                                <span class="symptom-tag" data-symptom="discoloration">تغییر رنگ</span>
-                                <span class="symptom-tag" data-symptom="nothing">هیچ کدام</span>
-                            </div>
-                        </div>
-
-                        <div class="mb-4 animate__animated animate__fadeInUp animate__delay-2s">
-                            <label for="symptom-severity" class="form-label">شدت علائم به صورت تقریبی:</label>
-                            <input type="range" class="form-range" id="symptom-severity" name="symptom_severity" min="1" max="10" required>
-                            <div class="d-flex justify-content-between">
-                                <span>کم</span>
-                                <span>زیاد</span>
-                            </div>
-                        </div>
-
-                        <div class="mb-4 text-center animate__animated animate__fadeInUp animate__delay-3s">
-                            <h3>ناحیه ای که مشاهده شده است را انتخاب نمایید:</h3>
-                            <div id="body-map-container">
-                                <svg id="body-map" viewBox="0 0 200 400" xmlns="http://www.w3.org/2000/svg">
-                                    <g id="body-parts">
-                                        <path id="head" class="body-part" d="M70,40 Q100,10 130,40 Q150,60 130,80 Q100,95 70,80 Q50,60 70,40 Z" data-name="سر"></path>
-                                        <path id="neck" class="body-part" d="M85,80 Q100,75 115,80 L110,100 Q100,105 90,100 Z" data-name="گردن"></path>
-                                        <path id="torso" class="body-part" d="M60,100 Q100,90 140,100 L130,220 Q100,230 70,220 Z" data-name="تنه"></path>
-                                        <path id="left-arm" class="body-part" d="M60,100 Q40,130 30,180 Q25,220 40,240 Q45,180 60,150 Z" data-name="بازوی چپ"></path>
-                                        <path id="right-arm" class="body-part" d="M140,100 Q160,130 170,180 Q175,220 160,240 Q155,180 140,150 Z" data-name="بازوی راست"></path>
-                                        <path id="left-hand" class="body-part" d="M30,240 Q20,260 25,280 Q35,290 45,280 Q40,260 40,240 Z" data-name="دست چپ"></path>
-                                        <path id="right-hand" class="body-part" d="M170,240 Q180,260 175,280 Q165,290 155,280 Q160,260 160,240 Z" data-name="دست راست"></path>
-                                        <path id="left-leg" class="body-part" d="M70,220 Q60,280 50,340 Q45,380 60,390 Q70,340 80,280 Q80,250 70,220 Z" data-name="پای چپ"></path>
-                                        <path id="right-leg" class="body-part" d="M130,220 Q140,280 150,340 Q155,380 140,390 Q130,340 120,280 Q120,250 130,220 Z" data-name="پای راست"></path>
-                                        <path id="left-foot" class="body-part" d="M50,390 Q45,400 50,410 Q60,415 70,410 Q65,400 60,390 Z" data-name="پای چپ"></path>
-                                        <path id="right-foot" class="body-part" d="M150,390 Q155,400 150,410 Q140,415 130,410 Q135,400 140,390 Z" data-name="پای راست"></path>
-                                        <rect id="genital-area" class="body-part" x="92" y="230" width="16" height="20" data-name="ناحیه تناسلی"></rect>
-                                    </g>
-                                </svg>
-                                <div class="body-part-label mt-2"></div>
-                            </div>
-                        </div>
-
-                        <div class="mb-4 animate__animated animate__fadeInUp animate__delay-3s">
-                            <label class="form-label">سابقه پزشکی:</label>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="دیابت" id="diabetes" name="medical_history">
-                                <label class="form-check-label" for="diabetes">دیابت</label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="فشار خون بالا" id="hypertension" name="medical_history">
-                                <label class="form-check-label" for="hypertension">فشار خون بالا</label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="آلرژی" id="allergy" name="medical_history">
-                                <label class="form-check-label" for="allergy">آلرژی</label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="بیماری خود ایمنی" id="autoimmune" name="medical_history">
-                                <label class="form-check-label" for="autoimmune">بیماری خود ایمنی</label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="سابقه سرطان پوست" id="skin-cancer-history" name="medical_history">
-                                <label class="form-check-label" for="skin-cancer-history">سابقه سرطان پوست</label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="هیچ کدام" کدام id="skin-cancer-history" name="medical_history">
-                                <label class="form-check-label" for="nothing">هیچ کدام</label>
-                            </div>
-                        </div>
-
-                        <div class="mb-4 animate__animated animate__fadeInUp animate__delay-3s">
-                            <label for="symptom-duration" class="form-label">مدت زمان مشاهده علائم:</label>
-                            <select class="form-select" id="symptom-duration" name="symptom_duration" required>
-                                <option value="">انتخاب کنید</option>
-                                <option value="چند روز">چند روز</option>
-                                <option value="چند هفته">چند هفته</option>
-                                <option value="چند ماه">چند ماه</option>
-                                <option value="چند سال">چند سال</option>
-                            </select>
-                        </div>
-
-                        <div class="mb-4 animate__animated animate__fadeInUp animate__delay-3s">
-                            <label for="additional-info" class="form-label">اطلاعات اضافی:</label>
-                            <textarea class="form-control" id="additional-info" name="additional_info" rows="3" maxlength="150"></textarea>
-                            <span id="info-error" class="error">اطلاعات اضافی نمی‌تواند بیشتر از 150 حرف باشد.</span>
-                            <div>کاراکترهای باقی مانده: <span id="remaining-chars">150</span></div>
-                        </div>
-                        <div class="text-center animate__animated animate__fadeInUp animate__delay-4s">
-                            <button type="submit" class="btn btn-primary mt-4">تشخیص</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
+  </head>
+  <body class="min-h-screen">
+    <div id="form-container" class="container-main">
+      <header class="mb-8 flex justify-between items-center">
+        <div>
+          <h1 class="text-3xl font-bold text-indigo-600 dark:text-indigo-400">
+            سیستم پیشرفته تشخیص بیماری‌های پوستی
+          </h1>
+          <p class="text-gray-600 dark:text-gray-300 mt-2">
+            ابزار هوشمند برای متخصصان پوست و پزشکان
+          </p>
         </div>
+        <button
+          id="theme-toggle"
+          class="p-2 rounded-full bg-gray-200 dark:bg-gray-700 focus:outline-none"
+        >
+          <svg
+            id="dark-icon"
+            class="w-6 h-6 hidden dark:block"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+          >
+            <path
+              d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"
+              fill-rule="evenodd"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+          <svg
+            id="light-icon"
+            class="w-6 h-6 block dark:hidden"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+          >
+            <path
+              d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"
+            ></path>
+          </svg>
+        </button>
+      </header>
+
+      <div class="card p-6 md:p-8 mb-10">
+        <div
+          class="flex mb-6 border-b border-gray-200 dark:border-gray-700 overflow-x-auto"
+        >
+          <button class="tab-btn active" data-tab="upload">
+            <i class="fas fa-upload ml-2"></i>آپلود تصویر
+          </button>
+          <button class="tab-btn" data-tab="patient">
+            <i class="fas fa-user-md ml-2"></i>اطلاعات بیمار
+          </button>
+          <button class="tab-btn" data-tab="symptoms">
+            <i class="fas fa-notes-medical ml-2"></i>علائم بالینی
+          </button>
+          <button class="tab-btn" data-tab="medical">
+            <i class="fas fa-heartbeat ml-2"></i>سوابق پزشکی
+          </button>
+        </div>
+
+        <form id="diagnosis-form" enctype="multipart/form-data">
+          <div id="upload-tab" class="tab-content active">
+            <div
+              class="upload-container animate__animated animate__fadeIn"
+              onclick="document.getElementById('file-input').click();"
+            >
+              <div class="text-center">
+                <svg
+                  class="w-16 h-16 mx-auto mb-4 text-indigo-500 dark:text-indigo-400"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
+                  ></path>
+                </svg>
+                <h3 class="text-lg font-medium mb-2">
+                  تصویر خود را اینجا رها کنید یا کلیک کنید تا انتخاب کنید
+                </h3>
+                <p class="text-sm text-gray-500 dark:text-gray-400">
+                  فرمت‌های مجاز: JPG، PNG، GIF
+                </p>
+              </div>
+              <input
+                type="file"
+                id="file-input"
+                name="file"
+                class="hidden"
+                accept="image/*"
+              />
+            </div>
+
+            <div id="image-preview" class="mt-6 hidden">
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <h3 class="text-lg font-medium mb-4">تصویر بارگذاری شده:</h3>
+                  <div
+                    class="bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden shadow-sm"
+                  >
+                    <img
+                      id="preview-image"
+                      class="w-full h-auto object-contain"
+                      src=""
+                      alt="تصویر ضایعه پوستی"
+                    />
+                  </div>
+                </div>
+                <div>
+                  <h3 class="text-lg font-medium mb-4">جزئیات فایل:</h3>
+                  <div
+                    class="bg-gray-100 dark:bg-gray-800 p-4 rounded-lg shadow-sm"
+                  >
+                    <div class="mb-4">
+                      <div class="progress">
+                        <div
+                          id="upload-progress"
+                          class="progress-bar"
+                          style="width: 0%"
+                        ></div>
+                      </div>
+                      <p
+                        id="upload-status"
+                        class="text-sm mt-2 text-gray-600 dark:text-gray-400"
+                      ></p>
+                    </div>
+                    <div class="space-y-2">
+                      <p class="flex justify-between">
+                        <span class="font-medium">نام فایل:</span>
+                        <span
+                          id="filename-display"
+                          class="text-gray-600 dark:text-gray-400"
+                        ></span>
+                      </p>
+                      <p class="flex justify-between">
+                        <span class="font-medium">اندازه:</span>
+                        <span
+                          id="filesize-display"
+                          class="text-gray-600 dark:text-gray-400"
+                        ></span>
+                      </p>
+                      <p class="flex justify-between">
+                        <span class="font-medium">ابعاد:</span>
+                        <span
+                          id="dimensions-display"
+                          class="text-gray-600 dark:text-gray-400"
+                        ></span>
+                      </p>
+                      <input
+                        type="hidden"
+                        name="filename"
+                        id="filename-input"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div id="patient-tab" class="tab-content">
+            <div
+              class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6"
+            >
+              <div>
+                <label for="age" class="form-label">سن بیمار</label>
+                <input
+                  type="number"
+                  id="age"
+                  name="age"
+                  min="0"
+                  max="120"
+                  class="input-field"
+                  required
+                />
+                <p id="age-error" class="error-message">
+                  سن نمی‌تواند بیشتر از 120 باشد.
+                </p>
+              </div>
+              <div>
+                <label for="gender" class="form-label">جنسیت</label>
+                <select id="gender" name="gender" class="input-field" required>
+                  <option value="">انتخاب کنید</option>
+                  <option value="مرد">مرد</option>
+                  <option value="زن">زن</option>
+                </select>
+                <p id="gender-error" class="error-message">
+                  لطفاً جنسیت را انتخاب کنید.
+                </p>
+              </div>
+              <div>
+                <label for="skin-type" class="form-label">نوع پوست</label>
+                <select
+                  id="skin-type"
+                  name="skin_type"
+                  class="input-field"
+                  required
+                >
+                  <option value="">انتخاب کنید</option>
+                  <option value="معمولی">معمولی</option>
+                  <option value="خشک">خشک</option>
+                  <option value="چرب">چرب</option>
+                  <option value="مختلط">مختلط</option>
+                  <option value="حساس">حساس</option>
+                </select>
+                <p id="skin-type-error" class="error-message">
+                  لطفاً نوع پوست را انتخاب کنید.
+                </p>
+              </div>
+              <div>
+                <label for="ethnicity" class="form-label">قومیت</label>
+                <select
+                  id="ethnicity"
+                  name="ethnicity"
+                  class="input-field"
+                  required
+                >
+                  <option value="">انتخاب کنید</option>
+                  <option value="آسیایی">آسیایی</option>
+                  <option value="اروپایی">اروپایی</option>
+                  <option value="آفریقایی">آفریقایی</option>
+                  <option value="آمریکایی">آمریکایی</option>
+                  <option value="خاورمیانه">خاورمیانه</option>
+                  <option value="سایر">سایر</option>
+                </select>
+                <p id="ethnicity-error" class="error-message">
+                  لطفاً قومیت را انتخاب کنید.
+                </p>
+              </div>
+            </div>
+
+            <div>
+              <label for="patient-history" class="form-label"
+                >سوابق عمومی بیمار</label
+              >
+              <textarea
+                id="patient-history"
+                name="patient_history"
+                rows="4"
+                class="input-field"
+                placeholder="توضیحات عمومی در مورد سوابق، عادات و سبک زندگی بیمار..."
+              ></textarea>
+            </div>
+          </div>
+
+          <div id="symptoms-tab" class="tab-content">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <div>
+                <h3 class="text-lg font-medium mb-4">علائم مشاهده شده</h3>
+                <div id="symptom-tags" class="flex flex-wrap gap-2">
+                  <span class="symptom-tag" data-symptom="itching">خارش</span>
+                  <span class="symptom-tag" data-symptom="redness">قرمزی</span>
+                  <span class="symptom-tag" data-symptom="swelling">تورم</span>
+                  <span class="symptom-tag" data-symptom="pain">درد</span>
+                  <span class="symptom-tag" data-symptom="dryness">خشکی</span>
+                  <span class="symptom-tag" data-symptom="scaling"
+                    >پوسته‌ریزی</span
+                  >
+                  <span class="symptom-tag" data-symptom="blistering"
+                    >تاول</span
+                  >
+                  <span class="symptom-tag" data-symptom="burning">سوزش</span>
+                  <span class="symptom-tag" data-symptom="discoloration"
+                    >تغییر رنگ</span
+                  >
+                  <span class="symptom-tag" data-symptom="bleeding"
+                    >خونریزی</span
+                  >
+                  <span class="symptom-tag" data-symptom="nothing"
+                    >هیچ کدام</span
+                  >
+                </div>
+                <input type="hidden" id="symptoms-input" name="symptoms" />
+
+                <div class="mt-6">
+                  <label for="symptom-severity" class="form-label"
+                    >شدت علائم (1-10)</label
+                  >
+                  <div class="flex items-center">
+                    <span class="text-sm text-gray-500 dark:text-gray-400 ml-2"
+                      >خفیف</span
+                    >
+                    <input
+                      type="range"
+                      id="symptom-severity"
+                      name="symptom_severity"
+                      min="1"
+                      max="10"
+                      value="5"
+                      class="flex-grow"
+                    />
+                    <span class="text-sm text-gray-500 dark:text-gray-400 mr-2"
+                      >شدید</span
+                    >
+                  </div>
+                  <div class="text-center mt-1">
+                    <span id="severity-value" class="text-sm font-medium"
+                      >5</span
+                    >
+                  </div>
+                </div>
+
+                <div class="mt-6">
+                  <label for="symptom-duration" class="form-label"
+                    >مدت زمان مشاهده علائم</label
+                  >
+                  <select
+                    id="symptom-duration"
+                    name="symptom_duration"
+                    class="input-field"
+                    required
+                  >
+                    <option value="">انتخاب کنید</option>
+                    <option value="چند روز">چند روز</option>
+                    <option value="چند هفته">چند هفته</option>
+                    <option value="چند ماه">چند ماه</option>
+                    <option value="چند سال">چند سال</option>
+                  </select>
+                  <p id="duration-error" class="error-message">
+                    لطفاً مدت زمان را انتخاب کنید.
+                  </p>
+                </div>
+              </div>
+
+              <div>
+                <h3 class="text-lg font-medium mb-4">ناحیه مشاهده شده</h3>
+                <div class="flex justify-center mb-4">
+                  <div class="relative w-48 h-auto">
+                    <svg
+                      id="body-map"
+                      viewBox="0 0 200 400"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <g id="body-parts">
+                        <path
+                          id="head"
+                          class="body-part"
+                          d="M70,40 Q100,10 130,40 Q150,60 130,80 Q100,95 70,80 Q50,60 70,40 Z"
+                          data-name="سر"
+                        ></path>
+                        <path
+                          id="face"
+                          class="body-part"
+                          d="M85,50 Q100,45 115,50 Q120,65 115,75 Q100,85 85,75 Q80,65 85,50 Z"
+                          data-name="صورت"
+                        ></path>
+                        <path
+                          id="neck"
+                          class="body-part"
+                          d="M85,80 Q100,75 115,80 L110,100 Q100,105 90,100 Z"
+                          data-name="گردن"
+                        ></path>
+                        <path
+                          id="chest"
+                          class="body-part"
+                          d="M60,110 Q100,100 140,110 L130,150 Q100,160 70,150 Z"
+                          data-name="قفسه سینه"
+                        ></path>
+                        <path
+                          id="abdomen"
+                          class="body-part"
+                          d="M70,150 Q100,160 130,150 L120,200 Q100,210 80,200 Z"
+                          data-name="شکم"
+                        ></path>
+                        <path
+                          id="left-arm"
+                          class="body-part"
+                          d="M60,110 Q40,130 30,180 Q25,200 40,210 Q45,180 60,150 Z"
+                          data-name="بازوی چپ"
+                        ></path>
+                        <path
+                          id="right-arm"
+                          class="body-part"
+                          d="M140,110 Q160,130 170,180 Q175,200 160,210 Q155,180 140,150 Z"
+                          data-name="بازوی راست"
+                        ></path>
+                        <path
+                          id="left-hand"
+                          class="body-part"
+                          d="M30,210 Q20,230 25,250 Q35,260 45,250 Q40,230 40,210 Z"
+                          data-name="دست چپ"
+                        ></path>
+                        <path
+                          id="right-hand"
+                          class="body-part"
+                          d="M170,210 Q180,230 175,250 Q165,260 155,250 Q160,230 160,210 Z"
+                          data-name="دست راست"
+                        ></path>
+                        <path
+                          id="left-thigh"
+                          class="body-part"
+                          d="M70,200 Q60,230 50,270 L70,280 Q80,240 80,200 Z"
+                          data-name="ران چپ"
+                        ></path>
+                        <path
+                          id="right-thigh"
+                          class="body-part"
+                          d="M130,200 Q140,230 150,270 L130,280 Q120,240 120,200 Z"
+                          data-name="ران راست"
+                        ></path>
+                        <path
+                          id="left-leg"
+                          class="body-part"
+                          d="M50,275 Q45,310 50,350 Q55,370 70,380 Q65,340 70,280 Z"
+                          data-name="ساق پای چپ"
+                        ></path>
+                        <path
+                          id="right-leg"
+                          class="body-part"
+                          d="M150,275 Q155,310 150,350 Q145,370 130,380 Q135,340 130,280 Z"
+                          data-name="ساق پای راست"
+                        ></path>
+                        <path
+                          id="left-foot"
+                          class="body-part"
+                          d="M50,380 Q45,390 50,400 Q60,405 70,400 Q65,390 70,380 Z"
+                          data-name="پای چپ"
+                        ></path>
+                        <path
+                          id="right-foot"
+                          class="body-part"
+                          d="M150,380 Q155,390 150,400 Q140,405 130,400 Q135,390 130,380 Z"
+                          data-name="پای راست"
+                        ></path>
+                        <rect
+                          id="genital-area"
+                          class="body-part"
+                          x="90"
+                          y="200"
+                          width="20"
+                          height="30"
+                          rx="5"
+                          data-name="ناحیه تناسلی"
+                        ></rect>
+                        <path
+                          id="back"
+                          class="body-part"
+                          d="M60,110 Q100,100 140,110 L130,200 Q100,210 70,200 Z"
+                          data-name="پشت"
+                          style="opacity: 0.5"
+                        ></path>
+                      </g>
+                    </svg>
+                  </div>
+                </div>
+                <div class="text-center mb-6">
+                  <p
+                    id="body-part-label"
+                    class="text-sm font-medium text-gray-600 dark:text-gray-400"
+                  >
+                    لطفاً ناحیه مورد نظر را از نقشه بدن انتخاب کنید
+                  </p>
+                  <input
+                    type="hidden"
+                    id="affected-area"
+                    name="affected_area"
+                  />
+                </div>
+
+                <div>
+                  <label for="additional-info" class="form-label"
+                    >توضیحات تکمیلی</label
+                  >
+                  <textarea
+                    id="additional-info"
+                    name="additional_info"
+                    rows="4"
+                    class="input-field"
+                    placeholder="توضیحات بیشتر در مورد ضایعه، تغییرات اخیر و سایر ملاحظات مهم..."
+                  ></textarea>
+                  <div class="flex justify-between mt-1">
+                    <p id="info-error" class="error-message">
+                      توضیحات نمی‌تواند بیشتر از 300 کاراکتر باشد.
+                    </p>
+                    <p class="text-sm text-gray-500 dark:text-gray-400">
+                      <span id="remaining-chars">300</span> کاراکتر باقی مانده
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div id="medical-tab" class="tab-content">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <div>
+                <h3 class="text-lg font-medium mb-4">سوابق پزشکی</h3>
+                <div class="space-y-3">
+                  <div class="flex items-center">
+                    <input
+                      id="diabetes"
+                      name="medical_history[]"
+                      value="دیابت"
+                      type="checkbox"
+                      class="w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500 dark:border-gray-600 dark:bg-gray-700"
+                    />
+                    <label for="diabetes" class="mr-2">دیابت</label>
+                  </div>
+                  <div class="flex items-center">
+                    <input
+                      id="hypertension"
+                      name="medical_history[]"
+                      value="فشار خون بالا"
+                      type="checkbox"
+                      class="w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500 dark:border-gray-600 dark:bg-gray-700"
+                    />
+                    <label for="hypertension" class="mr-2">فشار خون بالا</label>
+                  </div>
+                  <div class="flex items-center">
+                    <input
+                      id="allergy"
+                      name="medical_history[]"
+                      value="آلرژی"
+                      type="checkbox"
+                      class="w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500 dark:border-gray-600 dark:bg-gray-700"
+                    />
+                    <label for="allergy" class="mr-2">آلرژی</label>
+                  </div>
+                  <div class="flex items-center">
+                    <input
+                      id="autoimmune"
+                      name="medical_history[]"
+                      value="بیماری خود ایمنی"
+                      type="checkbox"
+                      class="w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500 dark:border-gray-600 dark:bg-gray-700"
+                    />
+                    <label for="autoimmune" class="mr-2"
+                      >بیماری خود ایمنی</label
+                    >
+                  </div>
+                  <div class="flex items-center">
+                    <input
+                      id="skin-cancer-history"
+                      name="medical_history[]"
+                      value="سابقه سرطان پوست"
+                      type="checkbox"
+                      class="w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500 dark:border-gray-600 dark:bg-gray-700"
+                    />
+                    <label for="skin-cancer-history" class="mr-2"
+                      >سابقه سرطان پوست</label
+                    >
+                  </div>
+                  <div class="flex items-center">
+                    <input
+                      id="thyroid"
+                      name="medical_history[]"
+                      value="بیماری تیروئید"
+                      type="checkbox"
+                      class="w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500 dark:border-gray-600 dark:bg-gray-700"
+                    />
+                    <label for="thyroid" class="mr-2">بیماری تیروئید</label>
+                  </div>
+                  <div class="flex items-center">
+                    <input
+                      id="heart-disease"
+                      name="medical_history[]"
+                      value="بیماری قلبی"
+                      type="checkbox"
+                      class="w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500 dark:border-gray-600 dark:bg-gray-700"
+                    />
+                    <label for="heart-disease" class="mr-2">بیماری قلبی</label>
+                  </div>
+                  <div class="flex items-center">
+                    <input
+                      id="nothing"
+                      name="medical_history[]"
+                      value="هیچ کدام"
+                      type="checkbox"
+                      class="w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500 dark:border-gray-600 dark:bg-gray-700"
+                    />
+                    <label for="nothing" class="mr-2">هیچ کدام</label>
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <h3 class="text-lg font-medium mb-4">سابقه دارویی</h3>
+                <div class="space-y-4">
+                  <div>
+                    <label for="current-medications" class="form-label"
+                      >داروهای مصرفی فعلی</label
+                    >
+                    <textarea
+                      id="current-medications"
+                      name="current_medications"
+                      rows="3"
+                      class="input-field"
+                      placeholder="لیست داروهای مصرفی بیمار را وارد کنید..."
+                    ></textarea>
+                  </div>
+                  <div>
+                    <label for="drug-allergies" class="form-label"
+                      >حساسیت‌های دارویی</label
+                    >
+                    <textarea
+                      id="drug-allergies"
+                      name="drug_allergies"
+                      rows="2"
+                      class="input-field"
+                      placeholder="حساسیت‌های دارویی بیمار را وارد کنید..."
+                    ></textarea>
+                  </div>
+                  <div>
+                    <label for="previous-treatments" class="form-label"
+                      >درمان‌های قبلی</label
+                    >
+                    <textarea
+                      id="previous-treatments"
+                      name="previous_treatments"
+                      rows="2"
+                      class="input-field"
+                      placeholder="درمان‌های قبلی مرتبط با ضایعه فعلی..."
+                    ></textarea>
+                  </div>
+
+                  <div class="flex justify-end mt-8">
+                    <button
+                      type="submit"
+                      id="diagnose-btn"
+                      class="btn-primary px-6 py-2 rounded-lg"
+                    >
+                      <i class="fas fa-microscope ml-2"></i>تشخیص
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex justify-between items-center mt-8">
+            <div>
+              <p
+                id="form-status"
+                class="text-sm text-gray-500 dark:text-gray-400"
+              ></p>
+            </div>
+            <div class="flex gap-3">
+              <button
+                type="button"
+                id="prev-tab"
+                class="btn-secondary px-4 py-2 rounded-lg"
+              >
+                <i class="fas fa-arrow-right ml-2"></i>قبلی
+              </button>
+              <button
+                type="button"
+                id="next-tab"
+                class="btn-secondary px-4 py-2 rounded-lg"
+              >
+                بعدی<i class="fas fa-arrow-left mr-2"></i>
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
     </div>
 
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+    <div id="loading-backdrop" class="backdrop">
+      <div class="modal text-center">
+        <svg
+          class="animate-spin h-12 w-12 text-indigo-600 mx-auto mb-3"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+        >
+          <circle
+            class="opacity-25"
+            cx="12"
+            cy="12"
+            r="10"
+            stroke="currentColor"
+            stroke-width="4"
+          ></circle>
+          <path
+            class="opacity-75"
+            fill="currentColor"
+            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+          ></path>
+        </svg>
+        <h3 class="text-xl font-bold mb-2">در حال پردازش</h3>
+        <p class="text-gray-600 dark:text-gray-300">
+          لطفاً صبر کنید، سیستم در حال تحلیل تصویر و اطلاعات بیمار است...
+        </p>
+      </div>
+    </div>
+
+    <div id="result-container" class="hidden"></div>
 
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-    <!-- AOS (Animate On Scroll) -->
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-
-    <!-- Particles.js -->
-    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
-
-    <!-- Typed.js -->
-    <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
     <script>
-        particlesJS.load('particles-js', '/static/particles.json', function() {
-            console.log('particles.js loaded');
+      // تشخیص و اعمال حالت تاریک/روشن
+      if (
+        window.matchMedia &&
+        window.matchMedia("(prefers-color-scheme: dark)").matches
+      ) {
+        document.documentElement.classList.add("dark");
+      }
+
+      window
+        .matchMedia("(prefers-color-scheme: dark)")
+        .addEventListener("change", (event) => {
+          if (event.matches) {
+            document.documentElement.classList.add("dark");
+          } else {
+            document.documentElement.classList.remove("dark");
+          }
         });
-    </script>
-    <script>
-        let uploadedFileName = null;
 
-        document.getElementById('file-input').addEventListener('change', function(e) {
-            const file = e.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    document.getElementById('image-preview').innerHTML = `<img src="${e.target.result}" class="img-fluid rounded" style="max-height: 300px;">`;
-                    uploadFile(file);
-                }
-                reader.readAsDataURL(file);
-            }
+      // دکمه تغییر تم
+      document.getElementById("theme-toggle").addEventListener("click", () => {
+        document.documentElement.classList.toggle("dark");
+      });
+
+      // مدیریت تب‌ها
+      const tabButtons = document.querySelectorAll(".tab-btn");
+      const tabContents = document.querySelectorAll(".tab-content");
+      const tabsOrder = ["upload", "patient", "symptoms", "medical"];
+      let currentTabIndex = 0;
+
+      tabButtons.forEach((button) => {
+        button.addEventListener("click", () => {
+          const tabId = button.getAttribute("data-tab");
+          currentTabIndex = tabsOrder.indexOf(tabId);
+
+          // فعال‌سازی دکمه تب انتخاب شده
+          tabButtons.forEach((btn) => {
+            btn.classList.remove("active");
+          });
+          button.classList.add("active");
+
+          // نمایش محتوای تب انتخاب شده
+          tabContents.forEach((content) => {
+            content.classList.remove("active");
+          });
+
+          document.getElementById(`${tabId}-tab`).classList.add("active");
+          updateNavButtons();
         });
+      });
 
-        function uploadFile(file) {
-            const formData = new FormData();
-            formData.append('file', file);
+      // دکمه‌های پیمایش قبلی و بعدی
+      const prevButton = document.getElementById("prev-tab");
+      const nextButton = document.getElementById("next-tab");
 
-            const xhr = new XMLHttpRequest();
-            xhr.open('POST', '/upload', true);
-
-            xhr.upload.onprogress = function(e) {
-                if (e.lengthComputable) {
-                    const percentComplete = (e.loaded / e.total) * 100;
-                    document.querySelector('.progress-bar').style.width = percentComplete + '%';
-                    document.querySelector('.progress-bar').setAttribute('aria-valuenow', percentComplete);
-                }
-            };
-
-            xhr.onload = function() {
-                if (xhr.status === 200) {
-                    const response = JSON.parse(xhr.responseText);
-                    if (response.success) {
-                        document.getElementById('upload-status').textContent = 'آپلود با موفقیت انجام شد.';
-                        uploadedFileName = response.filename;
-                        checkFormCompletion();
-                    } else {
-                        document.getElementById('upload-status').textContent = 'خطا در آپلود: ' + response.message;
-                    }
-                }
-            };
-
-            xhr.send(formData);
-            document.querySelector('.progress').style.display = 'block';
+      prevButton.addEventListener("click", () => {
+        if (currentTabIndex > 0) {
+          currentTabIndex--;
+          tabButtons[currentTabIndex].click();
         }
+      });
 
-        document.querySelectorAll('.symptom-tag').forEach(tag => {
-            tag.addEventListener('click', function() {
-                this.classList.toggle('active');
-                checkFormCompletion();
-            });
-        });
-
-        document.getElementById('diagnosis-form').addEventListener('input', checkFormCompletion);
-
-        function checkFormCompletion() {
-            const form = document.getElementById('diagnosis-form');
-            const requiredFields = form.querySelectorAll('[required]');
-            const diagnosisBtn = document.getElementById('diagnose-btn');
-            
-            let isFormComplete = true;
-            requiredFields.forEach(field => {
-                if (!field.value) {
-                    isFormComplete = false;
-                }
-            });
-
-            if (isFormComplete && uploadedFileName) {
-                diagnosisBtn.disabled = false;
-            } else {
-                diagnosisBtn.disabled = true;
-            }
+      nextButton.addEventListener("click", () => {
+        if (currentTabIndex < tabsOrder.length - 1) {
+          currentTabIndex++;
+          tabButtons[currentTabIndex].click();
         }
+      });
 
-        document.addEventListener('DOMContentLoaded', function() {
-            var form = document.getElementById('diagnosis-form');
-            var fileInput = document.getElementById('file-input');
-            
-            form.addEventListener('submit', function(e) {
-              '  e.preventDefault();'
-                
-                if (fileInput.files.length === 0) {
-                    diagnoseBtn.disabled = true; 
-                    alert('لطفاً یک تصویر انتخاب کنید.');
-                    return;
-                }
-                
-                var formData = new FormData(form);
-                
-                // اطمینان از اضافه شدن فایل به FormData
-                formData.append('file', fileInput.files[0]);
+      function updateNavButtons() {
+        prevButton.disabled = currentTabIndex === 0;
+        nextButton.disabled = currentTabIndex === tabsOrder.length - 1;
 
-                fetch('/diagnose', {
-                    method: 'POST',
-                    body: formData
-                })
-                .then(response => response.json())  // تغییر به json() برای پردازش پاسخ JSON
-                .then(data => {
-                    if (data.error) {
-                        alert(data.error);
-                    } else {
-                        document.body.innerHTML = data.html;
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    alert('خطا در ارتباط با سرور');
-                });
-            });
-        });
+        prevButton.style.opacity = prevButton.disabled ? "0.5" : "1";
+        nextButton.style.opacity = nextButton.disabled ? "0.5" : "1";
 
-        document.querySelectorAll('.body-part').forEach(part => {
-            part.addEventListener('click', function() {
-                document.querySelectorAll('.body-part').forEach(p => p.classList.remove('active'));
-                this.classList.add('active');
-                document.querySelector('.body-part-label').textContent = this.dataset.name;
-            });
-        });
-
-        document.getElementById('age').addEventListener('input', function() {
-            const ageInput = document.getElementById('age');
-            const ageError = document.getElementById('age-error');
-            
-            if (ageInput.value > 120) {
-                ageError.style.display = 'inline';
-                ageInput.value = 120;
-            } else {
-                ageError.style.display = 'none';
-            }
-        });
-
-        document.getElementById('diagnosis-form').addEventListener('submit', function(event) {
-            const skinType = document.getElementById('skin-type');
-            const gender = document.getElementById('gender');
-            const ethnicity = document.getElementById('ethnicity');
-            
-            let isValid = true;
-            
-            if (skinType.value === "") {
-                document.getElementById('skin-type-error').style.display = 'inline';
-                isValid = false;
-            } else {
-                document.getElementById('skin-type-error').style.display = 'none';
-            }
-            
-            if (gender.value === "") {
-                document.getElementById('gender-error').style.display = 'inline';
-                isValid = false;
-            } else {
-                document.getElementById('gender-error').style.display = 'none';
-            }
-            
-            if (ethnicity.value === "") {
-                document.getElementById('ethnicity-error').style.display = 'inline';
-                isValid = false;
-            } else {
-                document.getElementById('ethnicity-error').style.display = 'none';
-            }
-            
-            if (!isValid) {
-                event.preventDefault();
-            }
-        });
-
-        const additionalInfo = document.getElementById('additional-info');
-        const infoError = document.getElementById('info-error');
-        const remainingChars = document.getElementById('remaining-chars');
-
-        additionalInfo.addEventListener('input', function() {
-            const maxLength = 150;
-            const currentLength = additionalInfo.value.length;
-            const remaining = maxLength - currentLength;
-            
-            remainingChars.textContent = remaining;
-
-            if (currentLength > maxLength) {
-                infoError.style.display = 'inline';
-            } else {
-                infoError.style.display = 'none';
-            }
-        });
-
-        particlesJS.load('particles-js', '/static/particles.json', function() {
-            console.log('particles.js loaded');
-        });
-
-        // Initialize Particles.js
-        particlesJS("particles-js", {
-        "particles": {
-            "number": {
-                "value": 80,
-                "density": {
-                    "enable": true,
-                    "value_area": 800
-                }
-            },
-            "color": {
-                "value": "#007bff"
-            },
-            "shape": {
-                "type": "circle",
-                "stroke": {
-                    "width": 0,
-                    "color": "#000000"
-                },
-                "polygon": {
-                    "nb_sides": 5
-                }
-            },
-            "opacity": {
-                "value": 0.5,
-                "random": false,
-                "anim": {
-                    "enable": false,
-                    "speed": 1,
-                    "opacity_min": 0.1,
-                    "sync": false
-                }
-            },
-            "size": {
-                "value": 3,
-                "random": true,
-                "anim": {
-                    "enable": false,
-                    "speed": 40,
-                    "size_min": 0.1,
-                    "sync": false
-                }
-            },
-            "line_linked": {
-                "enable": true,
-                "distance": 150,
-                "color": "#007bff",
-                "opacity": 0.4,
-                "width": 1
-            },
-            "move": {
-                "enable": true,
-                "speed": 6,
-                "direction": "none",
-                "random": false,
-                "straight": false,
-                "out_mode": "out",
-                "bounce": false,
-                "attract": {
-                    "enable": false,
-                    "rotateX": 600,
-                    "rotateY": 1200
-                }
-            }
-        },
-        "interactivity": {
-            "detect_on": "canvas",
-            "events": {
-                "onhover": {
-                    "enable": true,
-                    "mode": "repulse"
-                },
-                "onclick": {
-                    "enable": true,
-                    "mode": "push"
-                },
-                "resize": true
-            },
-            "modes": {
-                "grab": {
-                    "distance": 400,
-                    "line_linked": {
-                        "opacity": 1
-                    }
-                },
-                "bubble": {
-                    "distance": 400,
-                    "size": 40,
-                    "duration": 2,
-                    "opacity": 8,
-                    "speed": 3
-                },
-                "repulse": {
-                    "distance": 200,
-                    "duration": 0.4
-                },
-                "push": {
-                    "particles_nb": 4
-                },
-                "remove": {
-                    "particles_nb": 2
-                }
-            }
-        },
-        "retina_detect": true
-    });
-
-    // Typing animation for the main title
-    var typed = new Typed('#main-title', {
-        strings: ['سیستم پیشرفته هوش مصنوعی تشخیص بیماری‌های پوستی'],
-        typeSpeed: 50,
-        backSpeed: 0,
-        loop: false,
-        showCursor: false,
-        onComplete: function(self) {
-            $('#main-title').addClass('animate__animated animate__pulse');
+        const formIsComplete = validateForm();
+        const diagnoseBtn = document.getElementById("diagnose-btn");
+        if (diagnoseBtn) {
+          diagnoseBtn.disabled = !formIsComplete;
         }
-    });
+      }
 
-    $('form').on('submit', function(event) {
-        event.preventDefault();
-        var formData = new FormData(this);
-        formData.append('file', fileInput.files[0]);
+      // مدیریت بارگذاری تصویر
+      const fileInput = document.getElementById("file-input");
+      let uploadedFile = null;
+
+      fileInput.addEventListener("change", (e) => {
+        const file = e.target.files[0];
+        if (file) {
+          uploadedFile = file;
+          displayImagePreview(file);
+          uploadImage(file);
+        }
+      });
+
+      function displayImagePreview(file) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          const preview = document.getElementById("preview-image");
+          preview.src = e.target.result;
+          document.getElementById("image-preview").classList.remove("hidden");
+
+          // نمایش اطلاعات فایل
+          document.getElementById("filename-display").textContent = file.name;
+          document.getElementById("filesize-display").textContent =
+            formatFileSize(file.size);
+
+          // محاسبه ابعاد تصویر
+          const img = new Image();
+          img.onload = function () {
+            document.getElementById(
+              "dimensions-display"
+            ).textContent = `${this.width} × ${this.height} پیکسل`;
+          };
+          img.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+      }
+
+      function formatFileSize(bytes) {
+        if (bytes < 1024) return bytes + " bytes";
+        else if (bytes < 1048576) return (bytes / 1024).toFixed(1) + " KB";
+        else return (bytes / 1048576).toFixed(1) + " MB";
+      }
+
+      function uploadImage(file) {
+        const formData = new FormData();
+        formData.append("file", file);
+
+        const progressBar = document.getElementById("upload-progress");
+        const statusEl = document.getElementById("upload-status");
+
+        statusEl.textContent = "در حال بارگذاری...";
 
         $.ajax({
-            url: '/diagnose',
-            type: 'POST',
-            data: formData,
-            contentType: false,
-            cache: false,
-            processData: false,
-            success: function(response) {
-                if(response.error) {
-                    alert(response.error);
-                } else {
-                    $('#result').html(response.html);
+          url: "/upload",
+          type: "POST",
+          data: formData,
+          contentType: false,
+          processData: false,
+          xhr: function () {
+            const xhr = new XMLHttpRequest();
+            xhr.upload.addEventListener(
+              "progress",
+              function (e) {
+                if (e.lengthComputable) {
+                  const percent = (e.loaded / e.total) * 100;
+                  progressBar.style.width = percent + "%";
                 }
-            },
-            error: function() {
-                alert('خطا در ارسال درخواست');
+              },
+              false
+            );
+            return xhr;
+          },
+          success: function (response) {
+            if (response.success) {
+              statusEl.textContent = "بارگذاری با موفقیت انجام شد";
+              document.getElementById("filename-input").value =
+                response.filename;
+              updateFormStatus();
+            } else {
+              statusEl.textContent = "خطا در بارگذاری: " + response.message;
             }
+          },
+          error: function () {
+            statusEl.textContent = "خطا در ارتباط با سرور";
+          },
         });
-    });
+      }
+
+      // مدیریت انتخاب علائم
+      const symptomTags = document.querySelectorAll(".symptom-tag");
+      const selectedSymptoms = new Set();
+      const symptomsInput = document.getElementById("symptoms-input");
+
+      symptomTags.forEach((tag) => {
+        tag.addEventListener("click", () => {
+          const symptom = tag.textContent;
+
+          if (symptom === "هیچ کدام") {
+            // اگر "هیچ کدام" انتخاب شد، همه را پاک کن
+            symptomTags.forEach((t) => {
+              t.classList.remove("active");
+            });
+            tag.classList.add("active");
+            selectedSymptoms.clear();
+            selectedSymptoms.add(symptom);
+          } else {
+            // اگر قبلا "هیچ کدام" انتخاب شده بود، آن را پاک کن
+            const noneTag = document.querySelector(
+              '.symptom-tag[data-symptom="nothing"]'
+            );
+            if (noneTag.classList.contains("active")) {
+              noneTag.classList.remove("active");
+              selectedSymptoms.delete("هیچ کدام");
+            }
+
+            // حالا با علامت انتخاب شده کار کن
+            if (tag.classList.contains("active")) {
+              tag.classList.remove("active");
+              selectedSymptoms.delete(symptom);
+            } else {
+              tag.classList.add("active");
+              selectedSymptoms.add(symptom);
+            }
+          }
+
+          symptomsInput.value = Array.from(selectedSymptoms).join(",");
+          updateFormStatus();
+        });
+      });
+
+      // مدیریت انتخاب ناحیه بدن
+      const bodyParts = document.querySelectorAll(".body-part");
+      const bodyPartLabel = document.getElementById("body-part-label");
+      const affectedAreaInput = document.getElementById("affected-area");
+      let selectedBodyPart = null;
+
+      bodyParts.forEach((part) => {
+        part.addEventListener("click", () => {
+          bodyParts.forEach((p) => p.classList.remove("active"));
+          part.classList.add("active");
+          selectedBodyPart = part.getAttribute("data-name");
+          bodyPartLabel.textContent = selectedBodyPart;
+          affectedAreaInput.value = selectedBodyPart;
+          updateFormStatus();
+        });
+      });
+
+      // مدیریت شدت علائم
+      const severitySlider = document.getElementById("symptom-severity");
+      const severityValue = document.getElementById("severity-value");
+
+      severitySlider.addEventListener("input", () => {
+        severityValue.textContent = severitySlider.value;
+      });
+
+      // مدیریت توضیحات تکمیلی
+      const additionalInfo = document.getElementById("additional-info");
+      const remainingChars = document.getElementById("remaining-chars");
+      const infoError = document.getElementById("info-error");
+      const maxLength = 300;
+
+      additionalInfo.addEventListener("input", () => {
+        const currentLength = additionalInfo.value.length;
+        const remaining = maxLength - currentLength;
+
+        remainingChars.textContent = remaining;
+
+        if (remaining < 0) {
+          infoError.style.display = "block";
+          additionalInfo.classList.add("border-red-500");
+        } else {
+          infoError.style.display = "none";
+          additionalInfo.classList.remove("border-red-500");
+        }
+      });
+
+      // مدیریت ورودی سن
+      const ageInput = document.getElementById("age");
+      const ageError = document.getElementById("age-error");
+
+      ageInput.addEventListener("input", () => {
+        if (parseInt(ageInput.value) > 120) {
+          ageError.style.display = "block";
+          ageInput.value = 120;
+        } else {
+          ageError.style.display = "none";
+        }
+
+        updateFormStatus();
+      });
+
+      // مدیریت انتخاب چک‌باکس "هیچ کدام" در سوابق پزشکی
+      const medicalHistoryCheckboxes = document.querySelectorAll(
+        'input[name="medical_history[]"]'
+      );
+      const nothingCheckbox = document.getElementById("nothing");
+
+      medicalHistoryCheckboxes.forEach((checkbox) => {
+        checkbox.addEventListener("change", () => {
+          if (checkbox.id === "nothing" && checkbox.checked) {
+            // اگر "هیچ کدام" انتخاب شد، بقیه را غیرفعال کن
+            medicalHistoryCheckboxes.forEach((cb) => {
+              if (cb.id !== "nothing") {
+                cb.checked = false;
+                cb.disabled = true;
+              }
+            });
+          } else if (checkbox.id === "nothing" && !checkbox.checked) {
+            // اگر "هیچ کدام" غیرفعال شد، بقیه را فعال کن
+            medicalHistoryCheckboxes.forEach((cb) => {
+              cb.disabled = false;
+            });
+          } else if (checkbox.checked) {
+            // اگر گزینه دیگری انتخاب شد، "هیچ کدام" را غیرفعال کن
+            nothingCheckbox.checked = false;
+          }
+        });
+      });
+
+      // اعتبارسنجی فرم
+      function validateForm() {
+        if (!uploadedFile && !document.getElementById("filename-input").value) {
+          return false;
+        }
+
+        const requiredFields = [
+          { id: "age", value: ageInput.value },
+          { id: "gender", value: document.getElementById("gender").value },
+          {
+            id: "skin-type",
+            value: document.getElementById("skin-type").value,
+          },
+          {
+            id: "ethnicity",
+            value: document.getElementById("ethnicity").value,
+          },
+          {
+            id: "symptom-duration",
+            value: document.getElementById("symptom-duration").value,
+          },
+        ];
+
+        const isValid =
+          (uploadedFile || document.getElementById("filename-input").value) &&
+          selectedSymptoms.size > 0 &&
+          selectedBodyPart !== null &&
+          requiredFields.every((field) => field.value !== "");
+
+        return isValid;
+      }
+
+      function updateFormStatus() {
+        const formStatus = document.getElementById("form-status");
+        const isValid = validateForm();
+
+        if (isValid) {
+          formStatus.textContent = "فرم تکمیل شده است";
+          formStatus.className = "text-sm text-green-600 dark:text-green-400";
+          if (document.getElementById("diagnose-btn")) {
+            document.getElementById("diagnose-btn").disabled = false;
+          }
+        } else {
+          formStatus.textContent = "لطفاً تمام فیلدهای الزامی را پر کنید";
+          formStatus.className = "text-sm text-gray-500 dark:text-gray-400";
+          if (document.getElementById("diagnose-btn")) {
+            document.getElementById("diagnose-btn").disabled = true;
+          }
+        }
+      }
+
+      // ارسال فرم
+      const diagnosisForm = document.getElementById("diagnosis-form");
+      const loadingBackdrop = document.getElementById("loading-backdrop");
+      const resultContainer = document.getElementById("result-container");
+      const formContainer = document.getElementById("form-container");
+
+      diagnosisForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        if (!validateForm()) {
+          alert("لطفاً تمام فیلدهای الزامی را پر کنید.");
+          return;
+        }
+
+        // نمایش لودینگ
+        loadingBackdrop.classList.add("active");
+
+        const formData = new FormData(diagnosisForm);
+
+        try {
+          const response = await fetch("/diagnose", {
+            method: "POST",
+            body: formData,
+          });
+
+          const data = await response.json();
+
+          if (data.error) {
+            alert(data.error);
+          } else {
+            // مخفی کردن فرم و نمایش نتایج
+            formContainer.classList.add("hidden");
+            resultContainer.classList.remove("hidden");
+            resultContainer.innerHTML = data.html;
+
+            // اجرای اسکریپت‌ها در نتایج
+            const scripts = resultContainer.querySelectorAll("script");
+            scripts.forEach((script) => {
+              const newScript = document.createElement("script");
+              if (script.src) {
+                newScript.src = script.src;
+              } else {
+                newScript.textContent = script.textContent;
+              }
+              document.body.appendChild(newScript);
+            });
+
+            // اضافه کردن رویداد به دکمه بازگشت
+            setTimeout(() => {
+              const backBtn = resultContainer.querySelector("#back-btn");
+              if (backBtn) {
+                backBtn.addEventListener("click", () => {
+                  resultContainer.classList.add("hidden");
+                  formContainer.classList.remove("hidden");
+                });
+              }
+            }, 100);
+
+            window.scrollTo({
+              top: 0,
+              behavior: "smooth",
+            });
+          }
+        } catch (error) {
+          console.error("Error:", error);
+          alert("خطا در ارتباط با سرور");
+        } finally {
+          loadingBackdrop.classList.remove("active");
+        }
+      });
+
+      // تنظیمات اولیه
+      updateNavButtons();
     </script>
-</body>
+  </body>
 </html>
